@@ -1,6 +1,7 @@
 
 # python
 from xml.dom import minidom as minidom
+from logging import getLogger
 
 # zope
 from zope.interface import implements
@@ -13,6 +14,8 @@ from anz.casclient.proxyretriever import Cas20ProxyRetriever
 from anz.casclient.utils import retrieveResponseFromServer
 from anz.casclient.exceptions import TicketValidationException, \
      InternalException, ConnectionException, InvalidProxyChainException
+
+LOG = getLogger( 'anz.casclient' )
 
 class TicketValidator( object ):
     ''' Validator that will confirm the validity of a supplied ticket.
@@ -33,7 +36,6 @@ class TicketValidator( object ):
         ''' See interfaces.ITicketValidator. '''
         validationUrl = self._constructValidationUrl(
             ticket, service, proxyCallbackUrl )
-        LOG.info("Validation URL: %s" % (validationUrl))
         serverResponse = self.retrieveResponseFromServer(
             validationUrl, ticket )
 

@@ -1,4 +1,4 @@
-﻿
+
 # python
 from xml.dom import minidom as minidom
 from urllib import quote
@@ -29,6 +29,8 @@ from anz.casclient.validationspecification import Cas10TicketValidator, \
      Cas20ServiceTicketValidator, Cas20ProxyTicketValidator
 from anz.casclient.exceptions import BaseException
 from anz.casclient.utils import retrieveResponseFromServer
+
+LOG = getLogger( 'anz.casclient' )
 
 try:
     from Products.CMFPlone.factory import _IMREALLYPLONE4
