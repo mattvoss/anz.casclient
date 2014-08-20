@@ -15,7 +15,7 @@ class Principal( object ):
         @param id
         the id of principal
 
-        @param id
+        @param username
         the username of principal
 
         @param pgt

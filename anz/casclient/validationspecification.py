@@ -1,7 +1,6 @@
 
 # python
 from xml.dom import minidom as minidom
-import logging
 
 # zope
 from zope.interface import implements
@@ -14,8 +13,6 @@ from anz.casclient.proxyretriever import Cas20ProxyRetriever
 from anz.casclient.utils import retrieveResponseFromServer
 from anz.casclient.exceptions import TicketValidationException, \
      InternalException, ConnectionException, InvalidProxyChainException
-
-LOG = logging.getLogger("anz.casclient")
 
 class TicketValidator( object ):
     ''' Validator that will confirm the validity of a supplied ticket.
@@ -130,12 +127,10 @@ class Cas20ServiceTicketValidator( TicketValidator ):
     def parseResponseFromServer( self, response ):
         ''' See interfaces.ITicketValidator. '''
         userName = ""
-        LOG.info("User Name Element: %s" % (self.userIdEl))
         try:
             dom = minidom.parseString( response )
             elements = dom.getElementsByTagNameNS( self.CAS_NS,
                                                    'authenticationFailure' )
-            LOG.info("Response: %s" % (elements[0].firstChild.data))
 
             if elements:
                 raise TicketValidationException( elements[0].firstChild.data )
@@ -146,8 +141,6 @@ class Cas20ServiceTicketValidator( TicketValidator ):
             elements = dom.getElementsByTagNameNS( self.CAS_NS, 'user' )
             userName = elements and elements[0].firstChild.data or None
 
-            LOG.info("UserId: %s" % (userId))
-            LOG.info("UserName: %s" % (userName))
             if not userId:
                 raise TicketValidationException(
                     'No principal was found in the response.' )
