@@ -36,8 +36,6 @@ try:
 except ImportError:
     PLONE4 = False
 
-LOG = getLogger( 'anz.casclient' )
-
 addAnzCASClientForm = PageTemplateFile(
     'www/add_anzcasclient_form.pt', globals() )
 
@@ -229,7 +227,6 @@ class AnzCASClient( BasePlugin, Cacheable ):
             else:
                 service = self.getService() + "logged_in?came_from="
 
-            service = self.getService()
             assertion = self.validateServiceTicket( service, ticket )
 
             # Save current user's session to be used by 'Single Sign Out'
@@ -267,7 +264,8 @@ class AnzCASClient( BasePlugin, Cacheable ):
                 session = sdm.getSessionData()
                 session.set( self.CAS_ASSERTION, assertion )
 
-        creds['login'] = assertion.getPrincipal().getId()
+        creds['userId'] = assertion.getPrincipal().getId()
+        creds['login'] = assertion.getPrincipal().getUserName()
         return creds
 
     security.declarePrivate( 'authenticateCredentials' )
@@ -275,8 +273,9 @@ class AnzCASClient( BasePlugin, Cacheable ):
         if credentials['extractor'] != self.getId():
             return None
 
+        userId = credentials['userId']
         login = credentials['login']
-        return ( login, login )
+        return (userId, login)
 
     security.declarePrivate( 'challenge' )
     def challenge( self, request, response, **kw ):
