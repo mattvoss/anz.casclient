@@ -30,6 +30,8 @@ from anz.casclient.validationspecification import Cas10TicketValidator, \
 from anz.casclient.exceptions import BaseException
 from anz.casclient.utils import retrieveResponseFromServer
 
+LOG = getLogger( 'anz.casclient' )
+
 try:
     from Products.CMFPlone.factory import _IMREALLYPLONE4
     PLONE4 = True
