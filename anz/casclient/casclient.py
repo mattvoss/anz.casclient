@@ -126,55 +126,64 @@ class AnzCASClient( BasePlugin, Cacheable ):
     # These URLs are proxier's proxyCallbackUrl.
     allowedProxyChains = []
 
+    # XML Element containing the Username of UserId
+    userElement = 'user'
+
     security = ClassSecurityInfo()
 
     _properties = (
         {
             'id': 'serviceUrl',
-            'lable': 'Service URL',
+            'label': 'Service URL',
             'type': 'string',
             'mode': 'w'
             },
         {
             'id': 'casServerUrlPrefix',
-            'lable': 'CAS Server URL Prefix',
+            'label': 'CAS Server URL Prefix',
             'type': 'string',
             'mode': 'w'
             },
         {
             'id': 'useSession',
-            'lable': 'Use Session',
+            'label': 'Use Session',
             'type': 'boolean',
             'mode': 'w'
             },
         {
             'id': 'renew',
-            'lable': 'Renew',
+            'label': 'Renew',
             'type': 'boolean',
             'mode': 'w'
             },
         {
             'id': 'gateway',
-            'lable': 'Gateway',
+            'label': 'Gateway',
             'type': 'boolean',
             'mode': 'w'
             },
         {
+            'id': 'userElement',
+            'label': 'User ID Attribute',
+            'type': 'string',
+            'mode': 'w'
+            },
+        {
             'id': 'ticketValidationSpecification',
-            'lable': 'Ticket Validation Specification',
+            'label': 'Ticket Validation Specification',
             'select_variable': 'ticketValidationSpecification_values',
             'type': 'selection',
             'mode': 'w'
             },
         {
             'id': 'proxyCallbackUrlPrefix',
-            'lable': 'Proxy Callback URL Prefix',
+            'label': 'Proxy Callback URL Prefix',
             'type': 'string',
             'mode': 'w'
             },
         {
             'id': 'acceptAnyProxy',
-            'lable': 'Accept Any Proxy',
+            'label': 'Accept Any Proxy',
             'type': 'boolean',
             'mode': 'w'
             },
@@ -211,8 +220,14 @@ class AnzCASClient( BasePlugin, Cacheable ):
         if not assertion:
             # Not already authenticated. Is there a ticket in the URL?
             ticket = request.form.get( 'ticket', None )
+            came_from = request.form.get( 'came_from', None )
             if not ticket:
                 return None # No CAS authentification
+
+            if came_from:
+                service = self.getService() + "logged_in?came_from=" + came_from
+            else:
+                service = self.getService() + "logged_in?came_from="
 
             service = self.getService()
             assertion = self.validateServiceTicket( service, ticket )
@@ -414,6 +429,7 @@ class AnzCASClient( BasePlugin, Cacheable ):
             else:
                 validator = Cas20ServiceTicketValidator(
                     self.casServerUrlPrefix, self._pgtStorage, self.renew )
+                validator.setUserIdEl(self.userElement)
 
         return validator.validate(
             ticket, service, self.getProxyCallbackUrl() )
