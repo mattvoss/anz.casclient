@@ -135,7 +135,9 @@ class Cas20ServiceTicketValidator( TicketValidator ):
                                                    'authenticationFailure' )
 
             if elements:
-                raise TicketValidationException( elements[0].firstChild.data )
+                raise TicketValidationException(
+                        elements[0].getAttribute('code') +
+                        elements[0].firstChild.data )
 
             elements = dom.getElementsByTagNameNS( self.CAS_NS, self.userIdEl )
 
