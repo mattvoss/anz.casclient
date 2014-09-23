@@ -126,7 +126,8 @@ class AnzCASClient( BasePlugin, Cacheable ):
     # These URLs are proxier's proxyCallbackUrl.
     allowedProxyChains = []
 
-    # XML Element containing the Username of UserId
+    # The XML element in the CAS payload containing the username/ID (without
+    # the 'cas:' namespace prefix)
     userElement = 'user'
 
     security = ClassSecurityInfo()
@@ -141,6 +142,12 @@ class AnzCASClient( BasePlugin, Cacheable ):
         {
             'id': 'casServerUrlPrefix',
             'label': 'CAS Server URL Prefix',
+            'type': 'string',
+            'mode': 'w'
+            },
+        {
+            'id': 'userElement',
+            'label': 'User ID Attribute',
             'type': 'string',
             'mode': 'w'
             },
@@ -160,12 +167,6 @@ class AnzCASClient( BasePlugin, Cacheable ):
             'id': 'gateway',
             'label': 'Gateway',
             'type': 'boolean',
-            'mode': 'w'
-            },
-        {
-            'id': 'userElement',
-            'label': 'User ID Attribute',
-            'type': 'string',
             'mode': 'w'
             },
         {
