@@ -51,8 +51,8 @@ anz.casclient has some advantages:
 Requirements
 ============
 - Plone 3 or Plone 4
-- ZODB3>=3.8.3 (tested under 3.8.3 only)
-- zope.proxy>=3.4.1 (tested under 3.4.1 only)
+- ZODB3>=3.8.3
+- zope.proxy>=3.4.1
 - zope.bforest
 
 Installation
@@ -84,24 +84,12 @@ plone.recipe.zope2instance recipe to manage your project, you can do this:
         ...
         anz.casclient
        
-* Tell the plone.recipe.zope2instance recipe to install a ZCML slug:
-
-::
-
-    [instance]
-    recipe = plone.recipe.zope2instance
-    ...
-    zcml =
-        anz.casclient
-      
 * Re-run buildout, e.g. with:
 
 ::
 
     $ ./bin/buildout
         
-You can skip the ZCML slug if you are going to explicitly include the
-package from another package's configure.zcml file.
 
 How to use anz.casclient
 ========================
@@ -116,13 +104,13 @@ Configure 'Anz CAS Client' plugin
 Go into {your plone site}/acl_users/anz_casclient; in the 'Activate' tab 
 activate all four interfaces.
 
-Click 'Authentication' to configure 'Authentication Plugins', move
+Click 'Authentication' to configure 'Authentication Plugins'; move
 'anz_casclient' to the top.
 
-Click 'Challenge' to configure 'Challenge Plugins', move 'anz_casclient'
+Click 'Challenge' to configure 'Challenge Plugins'; move 'anz_casclient'
 to the top.
 
-Click 'Extraction' to configure 'Extraction Plugins', move 'anz_casclient'
+Click 'Extraction' to configure 'Extraction Plugins'; move 'anz_casclient'
 to the top.
 
 Go into 'Properties' tab to configure CAS related properties. 
