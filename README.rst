@@ -18,7 +18,7 @@ anz.casclient is a PAS plugin that authenticates users against a CAS
 
 Overview
 ========
-anz.casclient implement a new PAS plugin 'Anz CAS Client'. It enabling you
+anz.casclient implements a new PAS plugin 'Anz CAS Client'. It enables you
 to integrate your Zope sites into your CAS SSO solutions.
 
 Credits
@@ -36,23 +36,23 @@ works anz.casclient will never happen.
 
 Comparison with CAS4PAS
 =======================
-CAS4PAS is the first(if not the only)CAS client used in Zope world, but it
-has only implemented partial CAS
-`protocol <http://www.jasig.org/cas/protocol>`_, so comes anz.casclient.
+CAS4PAS was the first (if not the only) CAS client used in Zope world, but it
+only partially implemented the CAS
+`protocol <http://www.jasig.org/cas/protocol>`_, hence anz.casclient.
 
-anz.casclient have some advantages:
+anz.casclient has some advantages:
 
 - anz.casclient provides full CAS 1.0/2.0 protocol implementation.
-- anz.casclient implemented Single-Sign-Out.
-- anz.casclient provides a framework that similar as the official java 
-  client implementation, this will make it easy to follow the evolution of
+- anz.casclient implements Single-Sign-Out.
+- anz.casclient provides a framework similar to the official java 
+  client implementation, which will make it easy to follow the evolution of
   CAS client.
 
 Requirements
 ============
 - Plone 3 or Plone 4
-- ZODB3>=3.8.3 (test under 3.8.3 only)
-- zope.proxy>=3.4.1 (test under 3.4.1 only)
+- ZODB3>=3.8.3 (tested under 3.8.3 only)
+- zope.proxy>=3.4.1 (tested under 3.4.1 only)
 - zope.bforest
 
 Installation
@@ -108,13 +108,13 @@ How to use anz.casclient
 
 Create 'Anz CAS Client' plugin
 ------------------------------
-Go into ZMI, {your plone site}\acl_users, add an 'Anz CAS Client' instance,
-choose any Id you like, we input 'anz_casclient' for example.
+Go into ZMI, {your plone site}/acl_users and add an 'Anz CAS Client' instance;
+choose any Id you like, for example 'anz_casclient'.
 
 Configure 'Anz CAS Client' plugin
 ---------------------------------
-Go into {your plone site}\acl_users\anz_casclient, in 'Active' tab active
-all four interface.
+Go into {your plone site}/acl_users/anz_casclient; in the 'Activate' tab 
+activate all four interfaces.
 
 Click 'Authentication' to configure 'Authentication Plugins', move
 'anz_casclient' to the top.
@@ -129,36 +129,37 @@ Go into 'Properties' tab to configure CAS related properties.
 
 ==============================  ===========  ==============================
 Property                        Required     Note
-serviceUrl                      False        An identify of current service.
-                                             CAS will redirects to here
-                                             after login. Set this explicitly
-                                             but not determine it automatically
-                                             from request makes us get more
-                                             security assurance. See
+serviceUrl                      False        An identify of the current service;
+                                             CAS will redirect to here
+                                             after login. Setting this explicitly
+                                             rather than determining it automatically
+                                             from the HTTP request gives us more
+                                             security assurance -- see
                                              `here <https://wiki.jasig.org/display/CASC/CASFilter>`_.
 casServerUrlPrefix              True         The start of the CAS server URL.
 useSession                      False        Whether to store the Assertion
                                              in session or not. If sessions
-                                             are not used, proxy granting
+                                             are not used, a proxy granting
                                              ticket will be required for
-                                             each request. Default set to True.
-renew                           False        If set to True, CAS will ask
+                                             each request. Defaults to True.
+renew                           False        If set to True, CAS will ask the
                                              user for credentials again to
-                                             authenticate, this may be used
+                                             authenticate, regardless of existing
+                                             sessions.  This may be used
                                              for high-security applications.
-                                             Default set to False.
+                                             Defaults to False.
 gateway                         False        If set to True, CAS will not
                                              ask the user for credentials.
                                              If the user has a pre-existing
                                              single sign-on session with CAS,
                                              or if a single sign-on session
                                              can be established through
-                                             non-interactive means(i.e.
+                                             non-interactive means (i.e.
                                              trust authentication), CAS MAY
                                              redirect the client to the URL
                                              specified by the "service"
                                              parameter, appending a valid
-                                             service ticket.(CAS also MAY
+                                             service ticket. (CAS also MAY
                                              interpose an advisory page
                                              informing the client that a CAS
                                              authentication has taken place.)
@@ -181,28 +182,30 @@ gateway                         False        If set to True, CAS will not
                                              with the "renew" parameter.
                                              Behavior is undefined if both
                                              are set to True. See details
-                                             `here_ <http://www.jasig.org/cas/client-integration/gateway>`_.
-ticketValidationSpecification   True         Use which CAS protocol to
-                                             validate ticket.
-                                             one of ['CAS 1.0','CAS 2.0']
+                                             `here <https://www.apereo.org/cas/client-integration/gateway>`_.
+                                             Defaults to False.
+ticketValidationSpecification   True         Which CAS protocol to use for
+                                             validating the ticket,
+                                             one of ['CAS 1.0','CAS 2.0'].
 proxyCallbackUrlPrefix          False        The start of the proxy callback
-                                             url. You should set it point to
+                                             url. You should point it to the
                                              current plugin with protocol
                                              'https'. The result url will be
                                              '{proxyCallbackUrlPrefix}/proxyCallback'.
                                              If set, it means this service
-                                             will be used as a proxier to
-                                             access back-end service on
+                                             will be used as a proxy to
+                                             access a back-end service on
                                              behalf of a particular user.
 acceptAnyProxy                  False        Whether any proxy is OK.
 Allowed Proxy Chains            False        Allowed proxy chains. Each
                                              acceptable proxy chain should
                                              include a space-separated list
                                              of URLs. These URLs are
-                                             proxier's proxyCallbackUrl.
+                                             the proxyCallback parameter passed
+                                             to the proxy.
 ==============================  ===========  ==============================
 
-Example configures:
+Example configuration:
 
 - Set 'serviceUrl' to 'http://{my plone site domain}:{port}/plone'
 - Set 'casServerUrlPrefix' to 'https://{my cas server domain}:{port}/cas'
@@ -216,13 +219,13 @@ Example configures:
 
 Configure 'CAS login' entrance
 ------------------------------
-If you use 'Log in' link at the upper-right of the Plone page to login, you
+If you use the 'Log in' link at the upper-right of the Plone page to login, you
 should hide the stock Plone 'Log in' action first. Then add a new one named
 'CAS log in' there, set URL(Expression) to
 **'string:${globals_view/navigationRootUrl}/caslogin'**
 
 Then add a Script(Python) named '**caslogin**' into 'portal_skins/custom',
-its contents looks like:
+with contents like:
 
 ::
 
@@ -249,7 +252,7 @@ its contents looks like:
 
      request.RESPONSE.redirect(  url, lock=1 )
 
-If you use 'login portlet' to login, you should remove the stock Plone
+If you use the 'login portlet' to login, you should remove the stock Plone
 'login portlet' first so as not to confuse users. Then you should write a
 new 'CAS login portlet' to authenticate users against CAS or customize
 collective.castle_ to work with anz.casclient.
@@ -258,13 +261,13 @@ collective.castle_ to work with anz.casclient.
 
 Configure 'CAS logout' entrance
 -------------------------------
-If you use 'Log out' link at the upper-right of the Plone page to logout,
+If you use the 'Log out' link at the upper-right of the Plone page to logout,
 you should hide the stock Plone 'Log out' action first. Then add a new one
 named 'CAS log out' there, set URL(Expression) to
 **'string:${globals_view/navigationRootUrl}/caslogout'**
 
 Then add a Script(Python) named '**caslogout**' into 'portal_skins/custom',
-its contents looks like:
+with contents like:
 
 ::
 
@@ -290,18 +293,18 @@ its contents looks like:
 
 How to use proxy authentication
 ===============================
-Proxy authentication is added by CAS 2.0, for the reason why do we need
-it, you can see the details `here. <http://www.jasig.org/cas/proxy-authentication>`_
+Proxy authentication is added by CAS 2.0; for its uses,
+see the details `here. <https://www.apereo.org/cas/proxy-authentication>`_
 
 
-1. Create two plone sites in one Zope instance, called them **plone** and
+1. Create two plone sites in one Zope instance, called **plone** and
    **backend**.
-2. Create and configure 'Anz CAS Client' plugin on them(make sure both sites
+2. Create and configure an 'Anz CAS Client' plugin on each of them (make sure both sites
    can authenticate users against your CAS server).
-3. anz.casclient carried a simple example to show how to use it, but it need
+3. anz.casclient includes a simple example to show how to use it, but it needs
    you to do a little customization. Open
-   **anz.casclient\anz\casclient\proxyauthexample\view.py** with your
-   favorite editor, find **__init__** method and modify it to suit your
+   **anz.casclient/anz/casclient/proxyauthexample/view.py** with your
+   favorite editor, find the **__init__** method and modify it to suit your
    situation:
 
 ::
@@ -320,7 +323,7 @@ it, you can see the details `here. <http://www.jasig.org/cas/proxy-authenticatio
 
 4. After that restart your Zope, open a browser and login into site
    **plone** ( suppose user name is **tom** ).
-5. Modify location in your browser to
+5. Modify the location in your browser to
    **http://{domain of your zope instance}:{port}/plone/@@proxyAuthExample/getUserInfoFromTargetService**
    and click Enter, if all things goes well, you'll see:
 
