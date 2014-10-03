@@ -125,6 +125,10 @@ serviceUrl                      False        An identify of the current service;
                                              security assurance -- see
                                              `here <https://wiki.jasig.org/display/CASC/CASFilter>`_.
 casServerUrlPrefix              True         The start of the CAS server URL.
+userElement                     True         The element in the CAS response
+                                             containing the user ID.  Defaults to
+                                             'user', which corresponds to the
+                                             '\<cas:user\>' XML element.
 useSession                      False        Whether to store the Assertion
                                              in session or not. If sessions
                                              are not used, a proxy granting
