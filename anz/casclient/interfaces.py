@@ -156,13 +156,24 @@ class IPrincipal( Interface ):
     '''
     
     def getId():
-        ''' Returns the unique id for the Principal.
+        ''' Returns the unique id for the Principal (Plone: user ID); with
+        CAS 2.0 this is pulled from the configured user ID element (default:
+        cas:user).
         
         @return
         the unique id for the Principal
         
         '''
     
+    def getUserName():
+        ''' Returns the username (Plone: login name) for the Principal.
+        Always set to the cas:user element.
+        
+        @return
+        the username for the Principal
+        
+        '''
+
     def getProxyTicketFor( service ):
         ''' Retrieves a CAS proxy ticket for this specific principal.
         

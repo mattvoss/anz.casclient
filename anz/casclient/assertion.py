@@ -13,7 +13,7 @@ class Assertion( object ):
     implements( IAssertion )
     
     def __init__( self, principal ):
-        ''' Creates a new Assrtion with the supplied Principal.
+        ''' Creates a new Assertion with the supplied Principal.
         
         @param principal
         the Principal object to associate with the Assertion.
