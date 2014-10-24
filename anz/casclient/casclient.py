@@ -253,10 +253,11 @@ class AnzCASClient( BasePlugin, Cacheable ):
                 self.session._setupSession(str(username), request.response)
             else:
                 # is PLONE3
-                cookie = self.session.source.createIdentifier(username)
+                # Same unicode cast as above, slightly different API.
+                cookie = self.session.source.createIdentifier(str(username))
                 creds['cookie'] = cookie
                 creds['source'] = 'plone.session'
-                self.session.setupSession(username, request.response)
+                self.session.setupSession(str(username), request.response)
 
             # Save assertion into session
             if self.useSession:
